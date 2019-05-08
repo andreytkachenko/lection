@@ -99,24 +99,39 @@ for i in range(0, 10):
         factor = 1.0 / len(batch_X)
 
         # forward
-
+        
+        # First layer
         l1 = sigmoid(batch_X.dot(W1) + b1)
+
+        # Second layer
         l2 = sigmoid(l1.dot(W2) + b2)
+
+        # Loss layer
+        # TODO
 
         # backward
 
-        l2_error = l2 - batch_y
-        l2_delta = l2_error * sigmoid(l2, True)
+        ###### Loss layer
 
+        l2_error = l2 - batch_y
+
+        ###### Second layer: (l2_error, l2, W2) -> l1_error
+
+        l2_delta = l2_error * sigmoid(l2, True)
         l1_error = l2_delta.dot(W2.T)
-        l1_delta = l1_error * sigmoid(l1, True)
 
         dW2 = l1.T.dot(l2_delta) * factor
         db2 = np.mean(l2_delta, axis=0)
 
+        ###### First layer: (l1_error, l1, W1) -> l0_error
+
+        l1_delta = l1_error * sigmoid(l1, True)
+        # l0_error = l1_delta.dot(W1.T)
+
         dW1 = batch_X.T.dot(l1_delta) * factor
         db1 = np.mean(l1_delta, axis=0)
 
+        ######
         wd = 0.0
         alpha = 0.1
         mu = 0.1
